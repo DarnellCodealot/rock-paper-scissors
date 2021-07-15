@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors</title>
+        <meta charset="UTF-8">
+        <style>
+            body{
+                background: brown;
+            }
+
+            #your-name{
+                position:absolute;
+                top: 40%;
+                left: 30%;
+                user-select: none;
+            }
+
+            #you{
+                position:absolute;
+                top: 45%;
+                left: 30%;
+                user-select: none;
+            }
+
+            #johnny-bravo-name{
+                position:absolute;
+                top: 40%;
+                right: 28%;
+                user-select: none;
+            }
+
+            #johnny-bravo{
+                position:absolute;
+                top: 45%;
+                right: 25%;
+                user-select: none;
+            }
+
+            #r-p-s{
+                width: 320px;
+                column-gap: 20px;
+                display:grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                position:absolute;
+                top:45%;
+                left:43%;
+                user-select: none;
+            }
+
+            #paper{
+                width: 80px;
+                height: 100px;
+                padding: 0px 10px 0px 10px;
+            }
+
+            #scissors{
+                width: 100px;
+                height:100px;
+                padding: 0px 0px 0px 0px;
+            }
+
+            #rock{
+                width:100px;
+                height:100px;
+                padding: 0px 5px 0px 5px;
+            }
+
+            #button{
+                position: absolute;
+                width: 150px;
+                height: 50px;
+                top: 60%;
+                left: 48.5%;
+                border: solid black 2px;
+                text-align: center;
+                background: green;
+            }
+
+            #button p{
+                user-select: none;
+            }
+
+            .border{
+                border: solid black 2px;
+            }
+
+            .selected{
+                background-color: green;
+            }
+
+            .clickable{
+                cursor:pointer;
+            }
+
+            .players{
+                width: 150px;
+                height: 150px;
+            }
+
+            #yourItem{
+                position: absolute;
+                top: 70%;
+                left: 30%;
+            }
+
+            #johnnyItem{
+                position: absolute;
+                top:70%;
+                right: 27%;
+            }
+
+            .rock-copy{
+                width:100px;
+                height:100px;
+                padding: 0px 5px 0px 5px;
+                user-select: none;
+            }
+
+            .paper-copy{
+                width: 80px;
+                height: 100px;
+                padding: 0px 10px 0px 10px;
+                user-select: none;
+            }
+
+            .scissors-copy{
+                width: 100px;
+                height:100px;
+                padding: 0px 0px 0px 0px;
+                user-select: none;
+            }
+
+            #outcome{
+                position: absolute;
+                top: 20%;
+                left: 50%;
+                user-select: none;
+            }
+        </style>
+        <script>
+            let option;
+            let johnnyOption;
+            let canSelect = true;
+            let canClick = false;
+            function johnny_mechanics(){
+                let jc = parseInt(Math.random() * 3);
+                if(jc == 0){
+                    jc = "rock";
+                }
+                else if(jc == 1){
+                    jc = "paper";
+                }
+                else if(jc == 2){
+                    jc = "scissors";
+                }
+                return jc;
+            }
+            function who_won(){
+                if(option == johnnyOption){
+                    document.getElementById("outcome").innerHTML = "DRAW";
+                }
+                else if(option == "rock" && johnnyOption == "paper" || option == "paper" && johnnyOption == "scissors" || option == "scissors" && johnnyOption == "rock"){
+                    document.getElementById("outcome").innerHTML = "YOU LOST";
+                }
+                else if(option == "rock" && johnnyOption == "scissors" || option == "paper" && johnnyOption == "rock" || option == "scissors" && johnnyOption == "paper"){
+                    document.getElementById("outcome").innerHTML = "YOU WON"
+                }
+                document.getElementById("button-text").innerHTML = "Play Again";
+                document.getElementById("button").setAttribute("onclick", "location.reload()");
+                document.getElementById("button").setAttribute("class", "clickable")
+            }
+            function result(){
+                johnnyOption = johnny_mechanics();
+                if(johnnyOption == "rock"){
+                    document.getElementById("johnnyItem").setAttribute("src", "./resources/rock.png")
+                    document.getElementById("johnnyItem").setAttribute("class", "rock-copy")
+                }
+                else if(johnnyOption == "paper"){
+                    document.getElementById("johnnyItem").setAttribute("src", "./resources/paper.png")
+                    document.getElementById("johnnyItem").setAttribute("class", "paper-copy")
+                }
+                else if(johnnyOption == "scissors"){
+                    document.getElementById("johnnyItem").setAttribute("src", "./resources/scissors.png")
+                    document.getElementById("johnnyItem").setAttribute("class", "scissors-copy")
+                }
+                setTimeout(function(){ who_won(); }, 1000);
+            }
+            function selection(choice){
+                if(canSelect){
+                    option = choice;
+                    canClick = true;
+                    document.getElementById(choice).setAttribute("class", "border selected");
+                    if(choice == "rock"){
+                        document.getElementById("paper").setAttribute("class", "border clickable");
+                        document.getElementById("scissors").setAttribute("class", "border clickable");
+                    }
+                    else if(choice == "paper"){
+                        document.getElementById("rock").setAttribute("class", "border clickable");
+                        document.getElementById("scissors").setAttribute("class", "border clickable");
+                    }
+                    else if(choice == "scissors"){
+                        document.getElementById("paper").setAttribute("class", "border clickable");
+                        document.getElementById("rock").setAttribute("class", "border clickable");
+                    }
+                }
+            }
+            function selected(){
+                if(canClick){
+                    canSelect = false;
+                    document.getElementById("button").removeAttribute("class");
+                    if(option == "rock"){
+                        document.getElementById("paper").setAttribute("class", "border");
+                        document.getElementById("scissors").setAttribute("class", "border");
+                        document.getElementById("yourItem").setAttribute("src", "./resources/rock.png")
+                        document.getElementById("yourItem").setAttribute("class", "rock-copy")
+                    }
+                    else if(option == "paper"){
+                        document.getElementById("rock").setAttribute("class", "border");
+                        document.getElementById("scissors").setAttribute("class", "border");
+                        document.getElementById("yourItem").setAttribute("src", "./resources/paper.png")
+                        document.getElementById("yourItem").setAttribute("class", "paper-copy")
+                    }
+                    else if(option == "scissors"){
+                        document.getElementById("paper").setAttribute("class", "border");
+                        document.getElementById("rock").setAttribute("class", "border");
+                        document.getElementById("yourItem").setAttribute("src", "./resources/scissors.png")
+                        document.getElementById("yourItem").setAttribute("class", "scissors-copy")
+                    }
+                    result();
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <p id="outcome"></p>
+        <img id="yourItem">
+        <img id="johnnyItem">
+        <p id="your-name">You</p>
+        <img class="players" id="you" src="resources/you.jpg">
+        <p id="johnny-bravo-name">Johnny Bravo</p>
+        <img class="players" id="johnny-bravo" src="resources/johnny_bravo.jpg">
+        <div id="r-p-s">
+            <img class="border clickable" onclick='selection("rock")' id="rock" src="./resources/rock.png">
+            <img class="border clickable" onclick='selection("paper")' id="paper" src="./resources/paper.png">
+            <img class="border clickable" onclick='selection("scissors")' id="scissors" src="./resources/scissors.png">
+        </div>
+        <div class="clickable" id="button" onclick="selected()">
+            <p id="button-text">Select</p>
+        </div>
+    </body>
+</html>
